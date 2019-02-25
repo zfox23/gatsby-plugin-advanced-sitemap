@@ -136,6 +136,16 @@ const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) =>
     return nodes
 }
 
+const getResourceNames = (mapping) => {
+    let sourceNames = []
+
+    for (let resourceType in mapping) {
+        sourceNames.push(mapping[resourceType])
+    }
+
+    return _.uniq(_.map(sourceNames, (source) => source.name))
+}
+
 export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     const options = Object.assign(defaultOptions, options, pluginOptions)
 
@@ -175,22 +185,15 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     await copyStylesheet(options)
 
     const resourcesSiteMapsArray = []
-    let sourceNames = []
 
-    for (let resourceType in mapping) {
-        sourceNames.push(mapping[resourceType])
-    }
+    options.sourceNames = getResourceNames(mapping)
 
-    sourceNames = _.uniq(_.map(sourceNames, (source) => source.name))
-
-    sourceNames.forEach((type) => {
+    options.sourceNames.forEach((type) => {
         resourcesSiteMapsArray.push({
             type: type,
             xml: manager.getSiteMapXml(type, options),
         })
     })
-
-    options.sourceNames = sourceNames
 
     const indexSiteMap = manager.getIndexXml(options)
 
