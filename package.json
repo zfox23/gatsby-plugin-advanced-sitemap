@@ -1,0 +1,32 @@
+{
+  "name": "gatsby-plugin-advanced-sitemap",
+  "version": "0.0.0",
+  "repository": "git@github.com:TryGhost/gatsby-plugin-advanced-sitemap.git",
+  "author": "Ghost Foundation",
+  "license": "MIT",
+  "main": "app.js",
+  "scripts": {
+    "dev": "echo \"Implement me!\"",
+    "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
+    "lint": "eslint . --ext .js --cache",
+    "posttest": "yarn lint",
+    "preship": "yarn test",
+    "ship": "STATUS=$(git status --porcelain); echo $STATUS; if [ -z \"$STATUS\" ]; then yarn version && git push --follow-tags; fi"
+  },
+  "files": [
+    "app.js",
+    "lib"
+  ],
+  "devDependencies": {
+    "eslint": "5.14.1",
+    "eslint-plugin-ghost": "0.1.0",
+    "mocha": "6.0.1",
+    "should": "13.2.3",
+    "sinon": "7.2.4"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.3",
+    "ghost-ignition": "^3.0.2",
+    "lodash": "^4.17.11"
+  }
+}
