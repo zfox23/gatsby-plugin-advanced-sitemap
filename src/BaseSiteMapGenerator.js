@@ -66,7 +66,9 @@ export default class BaseSiteMapGenerator {
 
     getLastModifiedForDatum(datum) {
         if (datum.updated_at || datum.published_at || datum.created_at) {
-            return new Date(datum.updated_at) || new Date(datum.published_at) || new Date(datum.created_at)
+            const modifiedDate = datum.updated_at || datum.published_at|| datum.created_at
+
+            return moment(new Date(modifiedDate), moment.ISO_8601).toISOString()
         } else {
             return moment(new Date(), moment.ISO_8601).toISOString()
         }
