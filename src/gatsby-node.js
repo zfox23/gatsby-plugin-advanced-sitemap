@@ -12,6 +12,7 @@ const DEFAULTQUERY = `{
     edges {
       node {
         slug: path
+        url: path
       }
     }
   }
@@ -80,6 +81,24 @@ const serializeMarkdownNodes = (node) => {
     return node
 }
 
+const getNodePath = (node, allSitePage, sitePrefix, pathPrefix) => {
+    if (!node.slug) {
+        return node
+    }
+    const slugRegex = new RegExp(`${node.slug.replace(/\/$/, ``)}$`, `gi`)
+
+    node.path = path.join(sitePrefix, pathPrefix, node.slug)
+
+    for (let page of allSitePage.edges) {
+        if (page.node && page.node.url && page.node.url.replace(/\/$/, ``).match(slugRegex)) {
+            node.path = page.node.url
+            break;
+        }
+    }
+
+    return node
+}
+
 const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) => {
     const nodes = []
     const sourceObject = {}
@@ -96,18 +115,19 @@ const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) =>
                     if (!node) {
                         return
                     }
+
                     if (source === `allMarkdownRemark`) {
                         node = serializeMarkdownNodes(node)
                     }
-                    // Add site path prefix and resources prefix to create the correct absolute URL
-                    const nodePath = path.join(pathPrefix, mapping[source].prefix, node.slug)
+
+                    node = getNodePath(node, allSitePage, pathPrefix, mapping[source].prefix)
 
                     sourceObject[mapping[source].source].push({
-                        url: url.resolve(siteUrl, nodePath),
+                        url: url.resolve(siteUrl, node.path),
                         node: node,
                     })
                 })
-            }
+        }
         }
     }
     nodes.push(sourceObject)
