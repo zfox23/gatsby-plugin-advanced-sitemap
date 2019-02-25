@@ -28,11 +28,11 @@ export default class SiteMapIndexGenerator {
         return localUtils.getDeclarations(options) + xml(data)
     }
 
-    generateSiteMapUrlElements({ siteUrl, resourcesOutput, mapping }) {
-        return _.map(mapping, (resourceType) => {
-            const filePath = resourcesOutput.replace(/:resource/, resourceType.name)
+    generateSiteMapUrlElements({ sourceNames, siteUrl, resourcesOutput }) {
+        return _.map(sourceNames, (sourceName) => {
+            const filePath = resourcesOutput.replace(/:resource/, sourceName)
             const siteMapUrl = url.resolve(siteUrl, filePath)
-            const lastModified = resourceType.lastModified || moment(new Date(), moment.ISO_8601).toISOString()
+            const lastModified = this.types.lastModified || moment(new Date(), moment.ISO_8601).toISOString()
 
             return {
                 sitemap: [

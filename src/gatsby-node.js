@@ -1,6 +1,7 @@
 import path from 'path'
 import url from 'url'
 import fs from 'fs-extra'
+import _ from 'lodash'
 
 import defaultOptions from './defaults'
 import Manager from './SiteMapManager'
@@ -173,16 +174,25 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
 
     await copyStylesheet(options)
 
-    const indexSiteMap = manager.getIndexXml(options)
     const resourcesSiteMapsArray = []
+    let sourceNames = []
 
     for (let resourceType in mapping) {
-        const source = mapping[resourceType].source
-        resourcesSiteMapsArray.push({
-            type: mapping[resourceType].name,
-            xml: manager.getSiteMapXml(source, options),
-        })
+        sourceNames.push(mapping[resourceType])
     }
+
+    sourceNames = _.uniq(_.map(sourceNames, (source) => source.name))
+
+    sourceNames.forEach((type) => {
+        resourcesSiteMapsArray.push({
+            type: type,
+            xml: manager.getSiteMapXml(type, options),
+        })
+    })
+
+    options.sourceNames = sourceNames
+
+    const indexSiteMap = manager.getIndexXml(options)
 
     // Save the generated xml files in the public folder
     try {
