@@ -2,3 +2,5 @@
 /__tests__
 !index.js
 yarn.lock
+yarn-error.log
+node_modules
