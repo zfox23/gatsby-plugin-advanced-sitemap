@@ -7,6 +7,20 @@ import Manager from './SiteMapManager'
 
 const PUBLICPATH = `./public`
 const XSLFILE = path.resolve(__dirname, `./static/sitemap.xsl`)
+const DEFAULTQUERY = `{
+  allSitePage {
+    edges {
+      node {
+        slug: path
+      }
+    }
+  }
+  site {
+    siteMetadata {
+      siteUrl
+    }
+  }
+}`
 let siteUrl
 
 const runQuery = (handler, { query, exclude }) => handler(query).then((r) => {
@@ -66,7 +80,7 @@ const serializeMarkdownNodes = (node) => {
     return node
 }
 
-const serialize = ({ site, ...sources }, mapping, pathPrefix) => {
+const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) => {
     const nodes = []
     const sourceObject = {}
 
@@ -112,6 +126,11 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     const indexSitemapFile = path.join(PUBLICPATH, indexOutput)
     const resourcesSitemapFile = path.join(PUBLICPATH, resourcesOutput)
 
+    const defaultQueryRecords = await runQuery(
+        graphql,
+        {query: DEFAULTQUERY, exclude: options.exclude}
+    )
+
     const queryRecords = await runQuery(
         graphql,
         options
@@ -120,7 +139,7 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // Instanciate the Ghost Sitemaps Manager
     const manager = new Manager(options)
 
-    serialize(queryRecords, mapping, pathPrefix).forEach((source) => {
+    serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach((source) => {
         for (let type in source) {
             source[type].forEach((node) => {
                 // "feed" the sitemaps manager with our serialized records
