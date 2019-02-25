@@ -107,7 +107,7 @@ const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) =>
     siteUrl = site.siteMetadata.siteUrl
 
     for (let source in sources) {
-        if (mapping[source].source) {
+        if (mapping[source] && mapping[source].source) {
             const currentSource = sources.hasOwnProperty(source) ? sources[source] : []
 
             if (currentSource) {
