@@ -7,6 +7,8 @@ import defaultOptions from './defaults'
 import Manager from './SiteMapManager'
 
 const PUBLICPATH = `./public`
+const INDEXFILE = `/sitemap.xml`
+const RESOURCESFILE = `/sitemap-:resource.xml`
 const XSLFILE = path.resolve(__dirname, `./static/sitemap.xsl`)
 const DEFAULTQUERY = `{
   allSitePage {
@@ -121,7 +123,7 @@ const serialize = ({ ...sources },{ site, allSitePage }, mapping, pathPrefix) =>
                         node = serializeMarkdownNodes(node)
                     }
 
-                    node = getNodePath(node, allSitePage, pathPrefix, mapping[source].prefix)
+                    node = getNodePath(node, allSitePage, pathPrefix, mapping[source].path)
 
                     sourceObject[mapping[source].source].push({
                         url: url.resolve(siteUrl, node.path),
@@ -161,10 +163,13 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     delete options.plugins
     delete options.createLinkInHead
 
-    const { indexOutput, resourcesOutput, mapping } = options
+    const { mapping } = options
 
-    const indexSitemapFile = path.join(PUBLICPATH, indexOutput)
-    const resourcesSitemapFile = path.join(PUBLICPATH, resourcesOutput)
+    options.indexOutput = INDEXFILE
+    options.resourcesOutput = RESOURCESFILE
+
+    const indexSitemapFile = path.join(PUBLICPATH, INDEXFILE)
+    const resourcesSitemapFile = path.join(PUBLICPATH, RESOURCESFILE)
 
     const defaultQueryRecords = await runQuery(
         graphql,

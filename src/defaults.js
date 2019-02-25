@@ -16,12 +16,10 @@ const defaultOptions = {
             }
         }
   }`,
-    indexOutput: `/sitemap.xml`,
-    resourcesOutput: `/sitemap-:resource.xml`,
     mapping: {
         allMarkdownRemark: {
             name: `pages`,
-            prefix: `/`,
+            path: `/`,
             source: `pages`,
         },
     },
