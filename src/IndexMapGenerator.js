@@ -30,7 +30,7 @@ export default class SiteMapIndexGenerator {
 
     generateSiteMapUrlElements({ sourceNames, siteUrl, resourcesOutput }) {
         return _.map(sourceNames, (sourceName) => {
-            const filePath = resourcesOutput.replace(/:resource/, sourceName)
+            const filePath = resourcesOutput.replace(/:resource/, sourceName.name)
             const siteMapUrl = url.resolve(siteUrl, filePath)
             const lastModified = this.types.lastModified || moment(new Date(), moment.ISO_8601).toISOString()
 

@@ -143,7 +143,16 @@ const getResourceNames = (mapping) => {
         sourceNames.push(mapping[resourceType])
     }
 
-    return _.uniq(_.map(sourceNames, (source) => source.name))
+    sourceNames = _.map(sourceNames, (source) => {
+        return {
+            name: source.name,
+            source: source.source
+        }
+    })
+
+    sourceNames = _.uniqBy(sourceNames, `name`)
+
+    return sourceNames
 }
 
 export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
@@ -190,8 +199,8 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
 
     options.sourceNames.forEach((type) => {
         resourcesSiteMapsArray.push({
-            type: type,
-            xml: manager.getSiteMapXml(type, options),
+            type: type.name,
+            xml: manager.getSiteMapXml(type.source, options),
         })
     })
 
