@@ -45,8 +45,8 @@ plugins: [
     {
         resolve: `gatsby-plugin-advanced-sitemap`,
         options: {
+             // 1 query for each data type
             query: `
-            // 1 query for each data type
             {
                 allGhostPost {
                     edges {
