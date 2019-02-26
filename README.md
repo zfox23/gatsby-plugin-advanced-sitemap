@@ -4,9 +4,14 @@ The default Gatsby sitemap plugin generates a simple blob of raw XML for all you
 
 **Demo:** https://docs.ghost.org/sitemap.xml 
 
+
+&nbsp;
+
 ![example](https://user-images.githubusercontent.com/120485/53390652-61491c80-39c6-11e9-9b5c-280672614bdb.png)
 
 _NOTE: This plugin only generates output in `production` mode! To test, run: `gatsby build && gatsby serve`_
+
+&nbsp;
 
 
 ## Install
@@ -25,6 +30,7 @@ const plugins = [
 ]
 ```
 
+&nbsp;
 
 ## Options
 
@@ -120,6 +126,7 @@ plugins: [
 
 Example output of ☝️ this exact config 👉 https://gatsby.ghost.org/sitemap.xml
 
+&nbsp;
 
 # Copyright & License
 
