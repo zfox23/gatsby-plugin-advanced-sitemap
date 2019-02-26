@@ -1,23 +1,20 @@
+// These are the default options which can be overwritten
+// in gatsby-config.js
 const defaultOptions = {
     query: `
     {
-        allMarkdownRemark(sort: {order: ASC, fields: [frontmatter___date]}) {
+        allSitePage {
             edges {
                 node {
                     id
-                    frontmatter {
-                        published_at: date
-                        feature_image: image
-                    }
-                    fields {
-                        slug
-                    }
+                    slug: path
+                    url: path
                 }
             }
         }
-  }`,
+    }`,
     mapping: {
-        allMarkdownRemark: {
+        allSitePage: {
             name: `pages`,
             path: `/`,
             source: `pages`,
