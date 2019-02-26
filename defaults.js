@@ -8,9 +8,7 @@ var defaultOptions = {
   query: "\n    {\n        allSitePage {\n            edges {\n                node {\n                    id\n                    slug: path\n                    url: path\n                }\n            }\n        }\n    }",
   mapping: {
     allSitePage: {
-      name: "pages",
-      path: "/",
-      source: "pages"
+      sitemap: "pages"
     }
   },
   exclude: ["/dev-404-page", "/404", "/404.html", "/offline-plugin-app-shell-fallback"],

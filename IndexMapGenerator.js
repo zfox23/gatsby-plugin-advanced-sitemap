@@ -52,7 +52,7 @@ function () {
 
       var siteMapUrl = _url.default.resolve(siteUrl, filePath);
 
-      var lastModified = _this.types[source.source].lastModified || (0, _moment.default)(new Date(), _moment.default.ISO_8601).toISOString();
+      var lastModified = _this.types[source.sitemap].lastModified || (0, _moment.default)(new Date(), _moment.default.ISO_8601).toISOString();
       return {
         sitemap: [{
           loc: siteMapUrl

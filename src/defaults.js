@@ -15,9 +15,7 @@ const defaultOptions = {
     }`,
     mapping: {
         allSitePage: {
-            name: `pages`,
-            path: `/`,
-            source: `pages`,
+            sitemap: `pages`,
         },
     },
     exclude: [
