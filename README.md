@@ -36,39 +36,39 @@ const plugins = [
 
 If you want to generate advanced, individually organised sitemaps based on your data, you can do so by passing in a query and config. The example below uses [Ghost](https://ghost.org), but this should work with any data source - including Pages, Markdown, Contentful, etc.
 
-Example:
+**Example:**
 
 ```javascript
 // gatsby-config.js
+
 plugins: [
     {
         resolve: `gatsby-plugin-advanced-sitemap`,
         options: {
             query: `
+            // 1 query for each data type
             {
-                allGhostPost(sort: {order: ASC, fields: published_at}) {
+                allGhostPost {
                     edges {
                         node {
                             id
                             slug
                             updated_at
-                            created_at
                             feature_image
                         }
                     }
                 }
-                allGhostPage(sort: {order: ASC, fields: published_at}) {
+                allGhostPage {
                     edges {
                         node {
                             id
                             slug
                             updated_at
-                            created_at
                             feature_image
                         }
                     }
                 }
-                allGhostTag(sort: {order: ASC, fields: name}) {
+                allGhostTag {
                     edges {
                         node {
                             id
@@ -77,7 +77,7 @@ plugins: [
                         }
                     }
                 }
-                allGhostAuthor(sort: {order: ASC, fields: name}) {
+                allGhostAuthor {
                     edges {
                         node {
                             id
@@ -88,25 +88,19 @@ plugins: [
                 }
             }`,
             mapping: {
+                // Each data type can be mapped to a predefined sitemap
+                // Routes can be grouped in one of: posts, tags, authors, pages
                 allGhostPost: {
-                    name: `posts`,
-                    path: `/`,
-                    source: `posts`,
+                    sitemap: `posts`,
                 },
                 allGhostTag: {
-                    name: `tags`,
-                    path: `tag`,
-                    source: `tags`,
+                    sitemap: `tags`,
                 },
                 allGhostAuthor: {
-                    name: `authors`,
-                    path: `author`,
-                    source: `authors`,
+                    sitemap: `authors`,
                 },
                 allGhostPage: {
-                    name: `pages`,
-                    path: `/`,
-                    source: `pages`,
+                    sitemap: `pages`,
                 },
             },
             exclude: [
@@ -114,9 +108,7 @@ plugins: [
                 `/404`,
                 `/404.html`,
                 `/offline-plugin-app-shell-fallback`,
-                `/data-schema`,
-                `/data-schema-author`,
-                `/data-schema-page`,
+                `/my-excluded-page`,
             ],
             createLinkInHead: true,
         }
