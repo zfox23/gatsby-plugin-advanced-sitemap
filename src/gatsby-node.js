@@ -200,9 +200,9 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
 
     const resourcesSiteMapsArray = []
 
-    options.sourceNames = getResourceNames(mapping)
+    options.sources = getResourceNames(mapping)
 
-    options.sourceNames.forEach((type) => {
+    options.sources.forEach((type) => {
         resourcesSiteMapsArray.push({
             type: type.name,
             xml: manager.getSiteMapXml(type.source, options),

@@ -27,7 +27,7 @@ export default class BaseSiteMapGenerator {
         const timedNodes = _.map(this.nodeLookup, function (node, id) {
             return {
                 id: id,
-                // Using negative here to sort newest to oldest
+                 // Using negative here to sort newest to oldest
                 ts: -(self.nodeTimeLookup[id] || 0),
                 node: node,
             }
@@ -61,16 +61,16 @@ export default class BaseSiteMapGenerator {
 
         // force regeneration of xml
         this.siteMapContent = null
-        this.lastModified = Date.now()
+        this.lastModified = moment(new Date())
     }
 
     getLastModifiedForDatum(datum) {
         if (datum.updated_at || datum.published_at || datum.created_at) {
             const modifiedDate = datum.updated_at || datum.published_at|| datum.created_at
 
-            return moment(new Date(modifiedDate), moment.ISO_8601).toISOString()
+            return moment(new Date(modifiedDate))
         } else {
-            return moment(new Date(), moment.ISO_8601).toISOString()
+            return moment(new Date())
         }
     }
 
@@ -88,7 +88,7 @@ export default class BaseSiteMapGenerator {
         node = {
             url: [
                 { loc: url },
-                { lastmod: moment(this.getLastModifiedForDatum(datum)).toISOString() },
+                { lastmod: moment(this.getLastModifiedForDatum(datum), moment.ISO_8601).toISOString() },
             ],
         }
 
