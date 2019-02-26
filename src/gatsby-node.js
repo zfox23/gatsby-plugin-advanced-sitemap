@@ -83,11 +83,66 @@ const getNodePath = (node, allSitePage, sitePrefix, pathPrefix) => {
     for (let page of allSitePage.edges) {
         if (page.node && page.node.url && page.node.url.replace(/\/$/, ``).match(slugRegex)) {
             node.path = page.node.url
-            break;
+            break
         }
     }
 
     return node
+}
+
+// Add all other URLs that Gatsby generated, using siteAllPage,
+// but we didn't fetch with our queries
+const addPageNodes = (parsedNodesArray, allSiteNodes, siteUrl) => {
+    const [parsedNodes] = parsedNodesArray
+    const pageNodes = []
+    const addedPageNodes = { pages: [] }
+
+    const usedNodes = allSiteNodes.filter(({ node }) => {
+        let foundOne
+        for (let type in parsedNodes) {
+            parsedNodes[type].forEach(((fetchedNode) => {
+                if (node.url === fetchedNode.node.path) {
+                    foundOne = true
+                }
+            }))
+        }
+        return foundOne
+    })
+
+    const remainingNodes = _.difference(allSiteNodes, usedNodes)
+
+    remainingNodes.forEach(({ node }) => {
+        addedPageNodes.pages.push({
+            url: url.resolve(siteUrl, node.url),
+            node: node,
+        })
+    })
+
+    pageNodes.push(addedPageNodes)
+
+    return pageNodes
+}
+
+const serializeSources = (mapping) => {
+    let sourceNames = []
+
+    for (let resourceType in mapping) {
+        sourceNames.push(mapping[resourceType])
+    }
+
+    sourceNames = _.map(sourceNames, (source) => {
+        // Ignore the key and only return the name and
+        // source as we need those to create the index
+        // and the belonging sources accordingly
+        return {
+            name: source.name,
+            source: source.source,
+        }
+    })
+
+    sourceNames = _.uniqBy(sourceNames, `name`)
+
+    return sourceNames
 }
 
 const runQuery = (handler, { query, exclude }) => handler(query).then((r) => {
@@ -139,34 +194,16 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping, pathPrefi
                         node: node,
                     })
                 })
-        }
+            }
         }
     }
     nodes.push(sourceObject)
 
-    return nodes
-}
+    const pageNodes = addPageNodes(nodes, allSitePage.edges, siteUrl)
 
-const serializeSources = (mapping) => {
-    let sourceNames = []
+    const allNodes = _.merge(nodes, pageNodes)
 
-    for (let resourceType in mapping) {
-        sourceNames.push(mapping[resourceType])
-    }
-
-    sourceNames = _.map(sourceNames, (source) => {
-        // Ignore the key and only return the name and
-        // source as we need those to create the index
-        // and the belonging sources accordingly
-        return {
-            name: source.name,
-            source: source.source
-        }
-    })
-
-    sourceNames = _.uniqBy(sourceNames, `name`)
-
-    return sourceNames
+    return allNodes
 }
 
 export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
@@ -187,7 +224,7 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // query or mapping
     const defaultQueryRecords = await runQuery(
         graphql,
-        {query: DEFAULTQUERY, exclude: options.exclude}
+        { query: DEFAULTQUERY, exclude: options.exclude }
     )
 
     // Don't run this query when no query and mapping is passed
