@@ -1,6 +1,6 @@
 {
   "name": "gatsby-plugin-advanced-sitemap",
-  "description": "Gatsby plugin that automatically creates a sitemap for your site",
+  "description": "Advanced plugin for generating configurable XML sitemaps with linked media for better SEO and human-readable XSL templates.",
   "version": "1.0.3",
   "license": "MIT",
   "author": "Ghost Foundation",
