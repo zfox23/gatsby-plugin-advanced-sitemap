@@ -7,7 +7,7 @@ The default Gatsby sitemap plugin generates a simple blob of raw XML for all you
 
 &nbsp;
 
-![example](https://user-images.githubusercontent.com/120485/53390652-61491c80-39c6-11e9-9b5c-280672614bdb.png)
+![example](https://user-images.githubusercontent.com/120485/53555088-d27a0280-3b73-11e9-88ca-fb4ec08d9d26.png)
 
 _NOTE: This plugin only generates output in `production` mode! To test, run: `gatsby build && gatsby serve`_
 
