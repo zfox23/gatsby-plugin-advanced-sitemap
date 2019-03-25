@@ -27,7 +27,7 @@ export default class BaseSiteMapGenerator {
         const timedNodes = _.map(this.nodeLookup, function (node, id) {
             return {
                 id: id,
-                 // Using negative here to sort newest to oldest
+                // Using negative here to sort newest to oldest
                 ts: -(self.nodeTimeLookup[id] || 0),
                 node: node,
             }
@@ -66,7 +66,7 @@ export default class BaseSiteMapGenerator {
 
     getLastModifiedForDatum(datum) {
         if (datum.updated_at || datum.published_at || datum.created_at) {
-            const modifiedDate = datum.updated_at || datum.published_at|| datum.created_at
+            const modifiedDate = datum.updated_at || datum.published_at || datum.created_at
 
             return moment(new Date(modifiedDate))
         } else {
