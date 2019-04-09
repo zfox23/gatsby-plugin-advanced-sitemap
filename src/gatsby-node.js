@@ -204,7 +204,7 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping, pathPrefi
     return allNodes
 }
 
-export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
+exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     let queryRecords
     const options = Object.assign(defaultOptions, options, pluginOptions)
     const { mapping } = options
@@ -235,7 +235,7 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // Instanciate the Ghost Sitemaps Manager
     const manager = new Manager(options)
 
-    serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach((source) => {
+    await serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach((source) => {
         for (let type in source) {
             source[type].forEach((node) => {
                 // "feed" the sitemaps manager with our serialized records
@@ -253,7 +253,7 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
 
     // Because it's possible to map duplicate names and/or sources to different
     // sources, we need to serialize it in a way that we know which source names
-    // we need and which types they are assignes to, independently from where they
+    // we need and which types they are assigned to, independently from where they
     // come from
     options.sources = serializeSources(mapping)
 
@@ -270,13 +270,19 @@ export const onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // Save the generated xml files in the public folder
     try {
         await fs.writeFile(indexSitemapFile, indexSiteMap)
-
-        resourcesSiteMapsArray.forEach(async (sitemap) => {
-            const filePath = resourcesSitemapFile.replace(/:resource/, sitemap.type)
-            await fs.writeFile(filePath, sitemap.xml)
-        })
     } catch (err) {
         console.error(err)
+    }
+
+    for (let sitemap of resourcesSiteMapsArray) {
+        const filePath = resourcesSitemapFile.replace(/:resource/, sitemap.type)
+
+        // Save the generated xml files in the public folder
+        try {
+            await fs.writeFile(filePath, sitemap.xml)
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return

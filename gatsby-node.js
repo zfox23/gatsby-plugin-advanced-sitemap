@@ -2,9 +2,6 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-exports.__esModule = true;
-exports.onPostBuild = void 0;
-
 var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
@@ -266,16 +263,17 @@ var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
   return allNodes;
 };
 
-var onPostBuild =
+exports.onPostBuild =
 /*#__PURE__*/
 function () {
   var _ref12 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator.default.mark(function _callee3(_ref11, pluginOptions) {
-    var graphql, pathPrefix, queryRecords, options, mapping, indexSitemapFile, resourcesSitemapFile, defaultQueryRecords, manager, resourcesSiteMapsArray, indexSiteMap;
-    return _regenerator.default.wrap(function _callee3$(_context3) {
+  _regenerator.default.mark(function _callee2(_ref11, pluginOptions) {
+    var graphql, pathPrefix, queryRecords, options, mapping, indexSitemapFile, resourcesSitemapFile, defaultQueryRecords, manager, resourcesSiteMapsArray, indexSiteMap, _i2, sitemap, filePath;
+
+    return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context2.prev = _context2.next) {
           case 0:
             graphql = _ref11.graphql, pathPrefix = _ref11.pathPrefix;
             options = Object.assign(_defaults.default, options, pluginOptions);
@@ -289,35 +287,36 @@ function () {
             // get data we need and to also allow not passing any custom
             // query or mapping
 
-            _context3.next = 11;
+            _context2.next = 11;
             return runQuery(graphql, {
               query: DEFAULTQUERY,
               exclude: options.exclude
             });
 
           case 11:
-            defaultQueryRecords = _context3.sent;
+            defaultQueryRecords = _context2.sent;
 
             if (!(!options.query || !options.mapping)) {
-              _context3.next = 16;
+              _context2.next = 16;
               break;
             }
 
             options.mapping = options.mapping || DEFAULTMAPPING;
-            _context3.next = 19;
+            _context2.next = 19;
             break;
 
           case 16:
-            _context3.next = 18;
+            _context2.next = 18;
             return runQuery(graphql, options);
 
           case 18:
-            queryRecords = _context3.sent;
+            queryRecords = _context2.sent;
 
           case 19:
             // Instanciate the Ghost Sitemaps Manager
             manager = new _SiteMapManager.default(options);
-            serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach(function (source) {
+            _context2.next = 22;
+            return serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach(function (source) {
               var _loop3 = function _loop3(type) {
                 source[type].forEach(function (node) {
                   // "feed" the sitemaps manager with our serialized records
@@ -328,16 +327,18 @@ function () {
               for (var type in source) {
                 _loop3(type);
               }
-            }); // The siteUrl is only available after we have the returned query results
+            });
 
+          case 22:
+            // The siteUrl is only available after we have the returned query results
             options.siteUrl = siteUrl;
-            _context3.next = 24;
+            _context2.next = 25;
             return copyStylesheet(options);
 
-          case 24:
+          case 25:
             resourcesSiteMapsArray = []; // Because it's possible to map duplicate names and/or sources to different
             // sources, we need to serialize it in a way that we know which source names
-            // we need and which types they are assignes to, independently from where they
+            // we need and which types they are assigned to, independently from where they
             // come from
 
             options.sources = serializeSources(mapping);
@@ -350,60 +351,61 @@ function () {
             });
             indexSiteMap = manager.getIndexXml(options); // Save the generated xml files in the public folder
 
-            _context3.prev = 28;
-            _context3.next = 31;
+            _context2.prev = 29;
+            _context2.next = 32;
             return _fsExtra.default.writeFile(indexSitemapFile, indexSiteMap);
 
-          case 31:
-            resourcesSiteMapsArray.forEach(
-            /*#__PURE__*/
-            function () {
-              var _ref13 = (0, _asyncToGenerator2.default)(
-              /*#__PURE__*/
-              _regenerator.default.mark(function _callee2(sitemap) {
-                var filePath;
-                return _regenerator.default.wrap(function _callee2$(_context2) {
-                  while (1) {
-                    switch (_context2.prev = _context2.next) {
-                      case 0:
-                        filePath = resourcesSitemapFile.replace(/:resource/, sitemap.type);
-                        _context2.next = 3;
-                        return _fsExtra.default.writeFile(filePath, sitemap.xml);
-
-                      case 3:
-                      case "end":
-                        return _context2.stop();
-                    }
-                  }
-                }, _callee2);
-              }));
-
-              return function (_x4) {
-                return _ref13.apply(this, arguments);
-              };
-            }());
-            _context3.next = 37;
+          case 32:
+            _context2.next = 37;
             break;
 
           case 34:
-            _context3.prev = 34;
-            _context3.t0 = _context3["catch"](28);
-            console.error(_context3.t0);
+            _context2.prev = 34;
+            _context2.t0 = _context2["catch"](29);
+            console.error(_context2.t0);
 
           case 37:
-            return _context3.abrupt("return");
+            _i2 = 0;
 
           case 38:
+            if (!(_i2 < resourcesSiteMapsArray.length)) {
+              _context2.next = 52;
+              break;
+            }
+
+            sitemap = resourcesSiteMapsArray[_i2];
+            filePath = resourcesSitemapFile.replace(/:resource/, sitemap.type); // Save the generated xml files in the public folder
+
+            _context2.prev = 41;
+            _context2.next = 44;
+            return _fsExtra.default.writeFile(filePath, sitemap.xml);
+
+          case 44:
+            _context2.next = 49;
+            break;
+
+          case 46:
+            _context2.prev = 46;
+            _context2.t1 = _context2["catch"](41);
+            console.error(_context2.t1);
+
+          case 49:
+            _i2++;
+            _context2.next = 38;
+            break;
+
+          case 52:
+            return _context2.abrupt("return");
+
+          case 53:
           case "end":
-            return _context3.stop();
+            return _context2.stop();
         }
       }
-    }, _callee3, null, [[28, 34]]);
+    }, _callee2, null, [[29, 34], [41, 46]]);
   }));
 
-  return function onPostBuild(_x2, _x3) {
+  return function (_x2, _x3) {
     return _ref12.apply(this, arguments);
   };
 }();
-
-exports.onPostBuild = onPostBuild;
