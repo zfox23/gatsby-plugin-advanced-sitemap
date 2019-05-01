@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _IndexMapGenerator = _interopRequireDefault(require("./IndexMapGenerator"));
 
@@ -31,7 +31,7 @@ function () {
   var _proto = SiteMapManager.prototype;
 
   _proto.createIndexGenerator = function createIndexGenerator() {
-    return new _IndexMapGenerator.default({
+    return new _IndexMapGenerator["default"]({
       types: {
         pages: this.pages,
         posts: this.posts,
@@ -42,19 +42,19 @@ function () {
   };
 
   _proto.createPagesGenerator = function createPagesGenerator(options) {
-    return new _PageMapGenerator.default(options);
+    return new _PageMapGenerator["default"](options);
   };
 
   _proto.createPostsGenerator = function createPostsGenerator(options) {
-    return new _PostMapGenerator.default(options);
+    return new _PostMapGenerator["default"](options);
   };
 
   _proto.createUsersGenerator = function createUsersGenerator(options) {
-    return new _UserMapGenerator.default(options);
+    return new _UserMapGenerator["default"](options);
   };
 
   _proto.createTagsGenerator = function createTagsGenerator(options) {
-    return new _TagMapGenerator.default(options);
+    return new _TagMapGenerator["default"](options);
   };
 
   _proto.getIndexXml = function getIndexXml(options) {
@@ -76,4 +76,4 @@ function () {
   return SiteMapManager;
 }();
 
-exports.default = SiteMapManager;
+exports["default"] = SiteMapManager;
