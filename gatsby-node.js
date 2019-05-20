@@ -24,7 +24,7 @@ var PUBLICPATH = "./public";
 var INDEXFILE = "/sitemap.xml";
 var RESOURCESFILE = "/sitemap-:resource.xml";
 
-var XSLFILE = _path["default"].resolve(__dirname, "./static/sitemap.xsl");
+var XSLFILE = _path.default.resolve(__dirname, "./static/sitemap.xsl");
 
 var DEFAULTQUERY = "{\n  allSitePage {\n    edges {\n      node {\n        id\n        slug: path\n        url: path\n      }\n    }\n  }\n  site {\n    siteMetadata {\n      siteUrl\n    }\n  }\n}";
 var DEFAULTMAPPING = {
@@ -37,11 +37,11 @@ var siteUrl;
 var copyStylesheet =
 /*#__PURE__*/
 function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])(
+  var _ref2 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator["default"].mark(function _callee(_ref) {
+  _regenerator.default.mark(function _callee(_ref) {
     var siteUrl, indexOutput, siteRegex, data, sitemapStylesheet;
-    return _regenerator["default"].wrap(function _callee$(_context) {
+    return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -49,16 +49,16 @@ function () {
             siteRegex = /(\{\{blog-url\}\})/g; // Get our stylesheet template
 
             _context.next = 4;
-            return _fsExtra["default"].readFile(XSLFILE);
+            return _fsExtra.default.readFile(XSLFILE);
 
           case 4:
             data = _context.sent;
             // Replace the `{{blog-url}}` variable with our real site URL
-            sitemapStylesheet = data.toString().replace(siteRegex, _url["default"].resolve(siteUrl, indexOutput)); // Save the updated stylesheet to the public folder, so it will be
+            sitemapStylesheet = data.toString().replace(siteRegex, _url.default.resolve(siteUrl, indexOutput)); // Save the updated stylesheet to the public folder, so it will be
             // available for the xml sitemap files
 
             _context.next = 8;
-            return _fsExtra["default"].writeFile(_path["default"].join(PUBLICPATH, "sitemap.xsl"), sitemapStylesheet);
+            return _fsExtra.default.writeFile(_path.default.join(PUBLICPATH, "sitemap.xsl"), sitemapStylesheet);
 
           case 8:
           case "end":
@@ -102,7 +102,7 @@ var getNodePath = function getNodePath(node, allSitePage, pathPrefix) {
   }
 
   var slugRegex = new RegExp(node.slug.replace(/\/$/, "") + "$", "gi");
-  node.path = _path["default"].join(pathPrefix, node.slug);
+  node.path = _path.default.join(pathPrefix, node.slug);
 
   for (var _iterator = allSitePage.edges, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
     var _ref3;
@@ -150,12 +150,12 @@ var addPageNodes = function addPageNodes(parsedNodesArray, allSiteNodes, siteUrl
     return foundOne;
   });
 
-  var remainingNodes = _lodash["default"].difference(allSiteNodes, usedNodes);
+  var remainingNodes = _lodash.default.difference(allSiteNodes, usedNodes);
 
   remainingNodes.forEach(function (_ref5) {
     var node = _ref5.node;
     addedPageNodes.pages.push({
-      url: _url["default"].resolve(siteUrl, node.url),
+      url: _url.default.resolve(siteUrl, node.url),
       node: node
     });
   });
@@ -170,7 +170,7 @@ var serializeSources = function serializeSources(mapping) {
     sitemaps.push(mapping[resourceType]);
   }
 
-  sitemaps = _lodash["default"].map(sitemaps, function (source) {
+  sitemaps = _lodash.default.map(sitemaps, function (source) {
     // Ignore the key and only return the name and
     // source as we need those to create the index
     // and the belonging sources accordingly
@@ -179,7 +179,7 @@ var serializeSources = function serializeSources(mapping) {
       sitemap: source.sitemap
     };
   });
-  sitemaps = _lodash["default"].uniqBy(sitemaps, "name");
+  sitemaps = _lodash.default.uniqBy(sitemaps, "name");
   return sitemaps;
 };
 
@@ -215,7 +215,7 @@ var runQuery = function runQuery(handler, _ref6) {
 
 var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
   var _ref9 = _temp === void 0 ? {} : _temp,
-      sources = (0, _extends2["default"])({}, _ref9);
+      sources = (0, _extends2.default)({}, _ref9);
 
   var site = _ref8.site,
       allSitePage = _ref8.allSitePage;
@@ -243,7 +243,7 @@ var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
 
           node = getNodePath(node, allSitePage, pathPrefix);
           sourceObject[mapping[type].sitemap].push({
-            url: _url["default"].resolve(siteUrl, node.path),
+            url: _url.default.resolve(siteUrl, node.path),
             node: node
           });
         });
@@ -258,7 +258,7 @@ var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
   nodes.push(sourceObject);
   var pageNodes = addPageNodes(nodes, allSitePage.edges, siteUrl);
 
-  var allNodes = _lodash["default"].merge(nodes, pageNodes);
+  var allNodes = _lodash.default.merge(nodes, pageNodes);
 
   return allNodes;
 };
@@ -266,20 +266,20 @@ var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
 exports.onPostBuild =
 /*#__PURE__*/
 function () {
-  var _ref12 = (0, _asyncToGenerator2["default"])(
+  var _ref12 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
-  _regenerator["default"].mark(function _callee2(_ref11, pluginOptions) {
+  _regenerator.default.mark(function _callee2(_ref11, pluginOptions) {
     var graphql, pathPrefix, queryRecords, options, mapping, indexSitemapFile, resourcesSitemapFile, defaultQueryRecords, manager, resourcesSiteMapsArray, indexSiteMap, _i2, _resourcesSiteMapsArr, sitemap, filePath;
 
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
+    return _regenerator.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             graphql = _ref11.graphql, pathPrefix = _ref11.pathPrefix;
-            options = Object.assign(_defaults["default"], options, pluginOptions);
+            options = Object.assign(_defaults.default, options, pluginOptions);
             mapping = options.mapping;
-            indexSitemapFile = _path["default"].join(PUBLICPATH, INDEXFILE);
-            resourcesSitemapFile = _path["default"].join(PUBLICPATH, RESOURCESFILE);
+            indexSitemapFile = _path.default.join(PUBLICPATH, INDEXFILE);
+            resourcesSitemapFile = _path.default.join(PUBLICPATH, RESOURCESFILE);
             delete options.plugins;
             delete options.createLinkInHead;
             options.indexOutput = INDEXFILE;
@@ -314,7 +314,7 @@ function () {
 
           case 19:
             // Instanciate the Ghost Sitemaps Manager
-            manager = new _SiteMapManager["default"](options);
+            manager = new _SiteMapManager.default(options);
             _context2.next = 22;
             return serialize(queryRecords, defaultQueryRecords, mapping, pathPrefix).forEach(function (source) {
               var _loop3 = function _loop3(type) {
@@ -353,7 +353,7 @@ function () {
 
             _context2.prev = 29;
             _context2.next = 32;
-            return _fsExtra["default"].writeFile(indexSitemapFile, indexSiteMap);
+            return _fsExtra.default.writeFile(indexSitemapFile, indexSiteMap);
 
           case 32:
             _context2.next = 37;
@@ -378,7 +378,7 @@ function () {
 
             _context2.prev = 41;
             _context2.next = 44;
-            return _fsExtra["default"].writeFile(filePath, sitemap.xml);
+            return _fsExtra.default.writeFile(filePath, sitemap.xml);
 
           case 44:
             _context2.next = 49;

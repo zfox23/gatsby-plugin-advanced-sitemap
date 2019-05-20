@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
@@ -16,7 +16,7 @@ var _BaseSiteMapGenerator = _interopRequireDefault(require("./BaseSiteMapGenerat
 var TagMapGenerator =
 /*#__PURE__*/
 function (_BaseMapGenerator) {
-  (0, _inheritsLoose2["default"])(TagMapGenerator, _BaseMapGenerator);
+  (0, _inheritsLoose2.default)(TagMapGenerator, _BaseMapGenerator);
 
   function TagMapGenerator(opts) {
     var _this;
@@ -24,12 +24,12 @@ function (_BaseMapGenerator) {
     _this = _BaseMapGenerator.call(this) || this;
     _this.name = "tags";
 
-    _lodash["default"].extend((0, _assertThisInitialized2["default"])(_this), opts);
+    _lodash.default.extend((0, _assertThisInitialized2.default)(_this), opts);
 
     return _this;
   }
 
   return TagMapGenerator;
-}(_BaseSiteMapGenerator["default"]);
+}(_BaseSiteMapGenerator.default);
 
-exports["default"] = TagMapGenerator;
+exports.default = TagMapGenerator;
