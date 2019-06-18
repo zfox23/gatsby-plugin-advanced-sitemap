@@ -94,15 +94,16 @@ var serializeMarkdownNodes = function serializeMarkdownNodes(node) {
   }
 
   return node;
-};
+}; // Compare our node paths with the ones that Gatsby has generated and updated them
+// with the "real" used ones.
 
-var getNodePath = function getNodePath(node, allSitePage, pathPrefix) {
-  if (!node.slug) {
+
+var getNodePath = function getNodePath(node, allSitePage) {
+  if (!node.path) {
     return node;
   }
 
-  var slugRegex = new RegExp(node.slug.replace(/\/$/, "") + "$", "gi");
-  node.path = _path["default"].join(pathPrefix, node.slug);
+  var slugRegex = new RegExp(node.path.replace(/\/$/, "") + "$", "gi");
 
   for (var _iterator = allSitePage.edges, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
     var _ref3;
@@ -251,6 +252,17 @@ var serialize = function serialize(_temp, _ref8, mapping, pathPrefix) {
 
           if (!node) {
             return;
+          } // if a mapping path is set, e. g. `/blog/tag` for tags, update the path
+          // to reflect this. This prevents mapping issues, when we later update
+          // the path with the Gatsby generated one in `getNodePath`
+
+
+          if (mapping[type].path) {
+            node.path = _path["default"].resolve(mapping[type].path, node.slug);
+          } else if (pathPrefix) {
+            node.path = _path["default"].join(pathPrefix, node.slug);
+          } else {
+            node.path = node.slug;
           }
 
           if (type === "allMarkdownRemark") {

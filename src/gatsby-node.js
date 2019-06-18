@@ -70,13 +70,13 @@ const serializeMarkdownNodes = (node) => {
     return node
 }
 
-const getNodePath = (node, allSitePage, pathPrefix) => {
-    if (!node.slug) {
+// Compare our node paths with the ones that Gatsby has generated and updated them
+// with the "real" used ones.
+const getNodePath = (node, allSitePage) => {
+    if (!node.path) {
         return node
     }
-    const slugRegex = new RegExp(`${node.slug.replace(/\/$/, ``)}$`, `gi`)
-
-    node.path = path.join(pathPrefix, node.slug)
+    const slugRegex = new RegExp(`${node.path.replace(/\/$/, ``)}$`, `gi`)
 
     for (let page of allSitePage.edges) {
         if (page.node && page.node.url && page.node.url.replace(/\/$/, ``).match(slugRegex)) {
@@ -194,6 +194,17 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping, pathPrefi
                 currentSource.edges.map(({ node }) => {
                     if (!node) {
                         return
+                    }
+
+                    // if a mapping path is set, e. g. `/blog/tag` for tags, update the path
+                    // to reflect this. This prevents mapping issues, when we later update
+                    // the path with the Gatsby generated one in `getNodePath`
+                    if (mapping[type].path) {
+                        node.path = path.resolve(mapping[type].path, node.slug)
+                    } else if (pathPrefix) {
+                        node.path = path.join(pathPrefix, node.slug)
+                    } else {
+                        node.path = node.slug
                     }
 
                     if (type === `allMarkdownRemark`) {
