@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _lodash = _interopRequireDefault(require("lodash"));
 
@@ -38,7 +38,7 @@ function () {
   _proto.generateXmlFromNodes = function generateXmlFromNodes(options) {
     var self = this; // Get a mapping of node to timestamp
 
-    var timedNodes = _lodash.default.map(this.nodeLookup, function (node, id) {
+    var timedNodes = _lodash["default"].map(this.nodeLookup, function (node, id) {
       return {
         id: id,
         // Using negative here to sort newest to oldest
@@ -48,17 +48,17 @@ function () {
     }, []); // Sort nodes by timestamp
 
 
-    var sortedNodes = _lodash.default.sortBy(timedNodes, "ts"); // Grab just the nodes
+    var sortedNodes = _lodash["default"].sortBy(timedNodes, "ts"); // Grab just the nodes
 
 
-    var urlElements = _lodash.default.map(sortedNodes, "node");
+    var urlElements = _lodash["default"].map(sortedNodes, "node");
 
     var data = {
       // Concat the elements to the _attr declaration
       urlset: [XMLNS_DECLS].concat(urlElements) // Return the xml
 
     };
-    return _utils.default.getDeclarations(options) + (0, _xml.default)(data);
+    return _utils["default"].getDeclarations(options) + (0, _xml["default"])(data);
   };
 
   _proto.addUrl = function addUrl(url, datum) {
@@ -76,15 +76,15 @@ function () {
     this.removeFromLookups(datum); // force regeneration of xml
 
     this.siteMapContent = null;
-    this.lastModified = (0, _moment.default)(new Date());
+    this.lastModified = (0, _moment["default"])(new Date());
   };
 
   _proto.getLastModifiedForDatum = function getLastModifiedForDatum(datum) {
     if (datum.updated_at || datum.published_at || datum.created_at) {
       var modifiedDate = datum.updated_at || datum.published_at || datum.created_at;
-      return (0, _moment.default)(new Date(modifiedDate));
+      return (0, _moment["default"])(new Date(modifiedDate));
     } else {
-      return (0, _moment.default)(new Date());
+      return (0, _moment["default"])(new Date());
     }
   };
 
@@ -102,7 +102,7 @@ function () {
       url: [{
         loc: url
       }, {
-        lastmod: (0, _moment.default)(this.getLastModifiedForDatum(datum), _moment.default.ISO_8601).toISOString()
+        lastmod: (0, _moment["default"])(this.getLastModifiedForDatum(datum), _moment["default"].ISO_8601).toISOString()
       }]
     };
     imgNode = this.createImageNodeFromDatum(datum);
@@ -127,7 +127,7 @@ function () {
     imageEl = [{
       'image:loc': image
     }, {
-      'image:caption': _path.default.basename(image)
+      'image:caption': _path["default"].basename(image)
     }]; // Return the node to be added to the url xml node
 
     return {
@@ -176,4 +176,4 @@ function () {
   return BaseSiteMapGenerator;
 }();
 
-exports.default = BaseSiteMapGenerator;
+exports["default"] = BaseSiteMapGenerator;

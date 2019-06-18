@@ -1,7 +1,7 @@
 "use strict";
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 // These are the default options which can be overwritten
 // in gatsby-config.js
 var defaultOptions = {
@@ -15,4 +15,4 @@ var defaultOptions = {
   createLinkInHead: true
 };
 var _default = defaultOptions;
-exports.default = _default;
+exports["default"] = _default;

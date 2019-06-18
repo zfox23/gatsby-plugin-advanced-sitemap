@@ -153,9 +153,25 @@ const runQuery = (handler, { query, exclude }) => handler(query).then((r) => {
         if (r.data[source] && r.data[source].edges && r.data[source].edges.length) {
             r.data[source].edges = r.data[source].edges.filter(({ node }) => !exclude.some((excludedRoute) => {
                 const slug = source === `allMarkdownRemark` ? node.fields.slug.replace(/^\/|\/$/, ``) : node.slug.replace(/^\/|\/$/, ``)
-                excludedRoute = excludedRoute.replace(/^\/|\/$/, ``)
+                excludedRoute = typeof excludedRoute === `object` ? excludedRoute : excludedRoute.replace(/^\/|\/$/, ``)
 
-                return slug.indexOf(excludedRoute) >= 0
+                // test if the passed regular expression is valid
+                if (typeof excludedRoute === `object`) {
+                    let excludedRouteIsValidRegEx = true
+                    try {
+                        new RegExp(excludedRoute)
+                    } catch (e) {
+                        excludedRouteIsValidRegEx = false
+                    }
+
+                    if (!excludedRouteIsValidRegEx) {
+                        throw new Error(`Excluded route is not a valid RegExp: `, excludedRoute)
+                    }
+
+                    return excludedRoute.test(slug)
+                } else {
+                    return slug.indexOf(excludedRoute) >= 0
+                }
             }))
         }
     }
