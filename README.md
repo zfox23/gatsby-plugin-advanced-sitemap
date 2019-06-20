@@ -2,7 +2,7 @@
 
 The default Gatsby sitemap plugin generates a simple blob of raw XML for all your pages. This **advanced sitemap plugin** adds more power and configuration, generating a single or multiple sitemaps with full XSL templates to make them neatly organised and human + machine readable, as well linking image resources to encourage media indexing.
 
-**Demo:** https://docs.ghost.org/sitemap.xml 
+**Demo:** https://docs.ghost.org/sitemap.xml
 
 
 &nbsp;
@@ -112,6 +112,7 @@ plugins: [
                 `/404.html`,
                 `/offline-plugin-app-shell-fallback`,
                 `/my-excluded-page`,
+                /(\/)?hash-\S*/, // you can also pass valid RegExp to exclude internal tags for example
             ],
             createLinkInHead: true,
         }
