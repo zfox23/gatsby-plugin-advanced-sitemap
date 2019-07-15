@@ -1,47 +1,43 @@
 import SiteMapIndexGenerator from "./IndexMapGenerator"
-import PageMapGenerator from "./PageMapGenerator"
-import PostMapGenerator from "./PostMapGenerator"
-import UsersMapGenerator from "./UserMapGenerator"
-import TagMapGenerator from "./TagMapGenerator"
+import SiteMapGenerator from "./SiteMapGenerator"
+import _ from "lodash"
 
 export default class SiteMapManager {
     constructor(options) {
+        let sitemapTypes = []
+
         options = options || {}
 
         this.options = options
 
-        this.pages = options.pages || this.createPagesGenerator(options)
-        this.posts = options.posts || this.createPostsGenerator(options)
-        this.users = this.authors = options.authors || this.createUsersGenerator(options)
-        this.tags = options.tags || this.createTagsGenerator(options)
-        this.index = options.index || this.createIndexGenerator(options)
+        for (let type in options.mapping) {
+            const sitemapType = options.mapping[type].sitemap || `pages`
+            sitemapTypes.push(sitemapType)
+        }
+
+        // ensure, we have a cleaned up array
+        sitemapTypes = _.uniq(sitemapTypes)
+
+        // create sitemaps for each type
+        sitemapTypes.forEach((type) => {
+            this[type] = options[type] || this.createSiteMapGenerator(options, type)
+        })
+
+        this.index = options.index || this.createIndexGenerator(sitemapTypes)
     }
 
-    createIndexGenerator() {
+    createIndexGenerator(sitemapTypes) {
+        const types = {}
+
+        sitemapTypes.forEach(type => types[type] = this[type])
+
         return new SiteMapIndexGenerator({
-            types: {
-                pages: this.pages,
-                posts: this.posts,
-                authors: this.authors,
-                tags: this.tags,
-            },
+            types: types,
         })
     }
 
-    createPagesGenerator(options) {
-        return new PageMapGenerator(options)
-    }
-
-    createPostsGenerator(options) {
-        return new PostMapGenerator(options)
-    }
-
-    createUsersGenerator(options) {
-        return new UsersMapGenerator(options)
-    }
-
-    createTagsGenerator(options) {
-        return new TagMapGenerator(options)
+    createSiteMapGenerator(options) {
+        return new SiteMapGenerator(options)
     }
 
     getIndexXml(options) {

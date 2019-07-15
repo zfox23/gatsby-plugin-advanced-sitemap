@@ -3,58 +3,54 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports["default"] = void 0;
 
 var _IndexMapGenerator = _interopRequireDefault(require("./IndexMapGenerator"));
 
-var _PageMapGenerator = _interopRequireDefault(require("./PageMapGenerator"));
+var _SiteMapGenerator = _interopRequireDefault(require("./SiteMapGenerator"));
 
-var _PostMapGenerator = _interopRequireDefault(require("./PostMapGenerator"));
-
-var _UserMapGenerator = _interopRequireDefault(require("./UserMapGenerator"));
-
-var _TagMapGenerator = _interopRequireDefault(require("./TagMapGenerator"));
+var _lodash = _interopRequireDefault(require("lodash"));
 
 var SiteMapManager =
 /*#__PURE__*/
 function () {
   function SiteMapManager(options) {
+    var _this = this;
+
+    var sitemapTypes = [];
     options = options || {};
     this.options = options;
-    this.pages = options.pages || this.createPagesGenerator(options);
-    this.posts = options.posts || this.createPostsGenerator(options);
-    this.users = this.authors = options.authors || this.createUsersGenerator(options);
-    this.tags = options.tags || this.createTagsGenerator(options);
-    this.index = options.index || this.createIndexGenerator(options);
+
+    for (var type in options.mapping) {
+      var sitemapType = options.mapping[type].sitemap || "pages";
+      sitemapTypes.push(sitemapType);
+    } // ensure, we have a cleaned up array
+
+
+    sitemapTypes = _lodash["default"].uniq(sitemapTypes); // create sitemaps for each type
+
+    sitemapTypes.forEach(function (type) {
+      _this[type] = options[type] || _this.createSiteMapGenerator(options, type);
+    });
+    this.index = options.index || this.createIndexGenerator(sitemapTypes);
   }
 
   var _proto = SiteMapManager.prototype;
 
-  _proto.createIndexGenerator = function createIndexGenerator() {
-    return new _IndexMapGenerator.default({
-      types: {
-        pages: this.pages,
-        posts: this.posts,
-        authors: this.authors,
-        tags: this.tags
-      }
+  _proto.createIndexGenerator = function createIndexGenerator(sitemapTypes) {
+    var _this2 = this;
+
+    var types = {};
+    sitemapTypes.forEach(function (type) {
+      return types[type] = _this2[type];
+    });
+    return new _IndexMapGenerator["default"]({
+      types: types
     });
   };
 
-  _proto.createPagesGenerator = function createPagesGenerator(options) {
-    return new _PageMapGenerator.default(options);
-  };
-
-  _proto.createPostsGenerator = function createPostsGenerator(options) {
-    return new _PostMapGenerator.default(options);
-  };
-
-  _proto.createUsersGenerator = function createUsersGenerator(options) {
-    return new _UserMapGenerator.default(options);
-  };
-
-  _proto.createTagsGenerator = function createTagsGenerator(options) {
-    return new _TagMapGenerator.default(options);
+  _proto.createSiteMapGenerator = function createSiteMapGenerator(options) {
+    return new _SiteMapGenerator["default"](options);
   };
 
   _proto.getIndexXml = function getIndexXml(options) {
@@ -76,4 +72,4 @@ function () {
   return SiteMapManager;
 }();
 
-exports.default = SiteMapManager;
+exports["default"] = SiteMapManager;

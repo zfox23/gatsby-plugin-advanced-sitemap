@@ -92,7 +92,8 @@ plugins: [
             }`,
             mapping: {
                 // Each data type can be mapped to a predefined sitemap
-                // Routes can be grouped in one of: posts, tags, authors, pages
+                // Routes can be grouped in one of: posts, tags, authors, pages, or a custom name
+                // The default sitemap - if none is passed - will be pages
                 allGhostPost: {
                     sitemap: `posts`,
                 },

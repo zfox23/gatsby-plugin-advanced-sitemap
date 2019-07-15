@@ -134,7 +134,7 @@ const serializeSources = (mapping) => {
         // and the belonging sources accordingly
         return {
             name: source.name ? source.name : source.sitemap,
-            sitemap: source.sitemap,
+            sitemap: source.sitemap || `pages`,
         }
     })
 
@@ -232,7 +232,6 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping) => {
 exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     let queryRecords
     const options = Object.assign(defaultOptions, options, pluginOptions)
-    const { mapping } = options
     const indexSitemapFile = path.join(PUBLICPATH, pathPrefix, INDEXFILE)
     const resourcesSitemapFile = path.join(PUBLICPATH, pathPrefix, RESOURCESFILE)
 
@@ -260,7 +259,7 @@ exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // Instanciate the Ghost Sitemaps Manager
     const manager = new Manager(options)
 
-    await serialize(queryRecords, defaultQueryRecords, mapping).forEach((source) => {
+    await serialize(queryRecords, defaultQueryRecords, options.mapping).forEach((source) => {
         for (let type in source) {
             source[type].forEach((node) => {
                 // "feed" the sitemaps manager with our serialized records
@@ -281,7 +280,7 @@ exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // sources, we need to serialize it in a way that we know which source names
     // we need and which types they are assigned to, independently from where they
     // come from
-    options.sources = serializeSources(mapping)
+    options.sources = serializeSources(options.mapping)
 
     options.sources.forEach((type) => {
         // for each passed name we want to receive the related source type
