@@ -24,6 +24,8 @@ export default class SiteMapManager {
         })
 
         this.index = options.index || this.createIndexGenerator(sitemapTypes)
+        // create the default pages one for all fallback sitemap URLs
+        this.pages = options.pages || this.createSiteMapGenerator(options, `pages`)
     }
 
     createIndexGenerator(sitemapTypes) {

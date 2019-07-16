@@ -32,7 +32,9 @@ function () {
     sitemapTypes.forEach(function (type) {
       _this[type] = options[type] || _this.createSiteMapGenerator(options, type);
     });
-    this.index = options.index || this.createIndexGenerator(sitemapTypes);
+    this.index = options.index || this.createIndexGenerator(sitemapTypes); // create the default pages one for all fallback sitemap URLs
+
+    this.pages = options.pages || this.createSiteMapGenerator(options, "pages");
   }
 
   var _proto = SiteMapManager.prototype;
