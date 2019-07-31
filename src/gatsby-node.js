@@ -187,7 +187,7 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping) => {
 
     for (let type in sources) {
         if (mapping[type] && mapping[type].sitemap) {
-            const currentSource = sources.hasOwnProperty(type) ? sources[type] : []
+            const currentSource = sources[type] ? sources[type] : []
 
             if (currentSource) {
                 sourceObject[mapping[type].sitemap] = sourceObject[mapping[type].sitemap] || []
@@ -231,7 +231,10 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping) => {
 
 exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     let queryRecords
-    const options = Object.assign(defaultOptions, options, pluginOptions)
+
+    // Passing the config option addUncaughtPages will add all pages which are not covered by passed mappings
+    // to the default `pages` sitemap. Otherwise they will be ignored.
+    const options = pluginOptions.addUncaughtPages ? _.merge(defaultOptions, pluginOptions) : Object.assign(defaultOptions, pluginOptions)
     const indexSitemapFile = path.join(PUBLICPATH, pathPrefix, INDEXFILE)
     const resourcesSitemapFile = path.join(PUBLICPATH, pathPrefix, RESOURCESFILE)
 

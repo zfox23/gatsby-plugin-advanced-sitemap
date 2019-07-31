@@ -38,8 +38,8 @@ export default class SiteMapManager {
         })
     }
 
-    createSiteMapGenerator(options) {
-        return new SiteMapGenerator(options)
+    createSiteMapGenerator(options, type) {
+        return new SiteMapGenerator(options, type)
     }
 
     getIndexXml(options) {

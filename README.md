@@ -115,7 +115,8 @@ plugins: [
                 `/my-excluded-page`,
                 /(\/)?hash-\S*/, // you can also pass valid RegExp to exclude internal tags for example
             ],
-            createLinkInHead: true,
+            createLinkInHead: true, // optional: create a link in the `<head>` of your site
+            addUncaughtPages: true, // optional: will fill up pages that are not caught by queries and mapping and list them under `sitemap-pages.xml`
         }
     }
 ]
