@@ -152,7 +152,7 @@ const runQuery = (handler, { query, exclude }) => handler(query).then((r) => {
         // Removing excluded paths
         if (r.data[source] && r.data[source].edges && r.data[source].edges.length) {
             r.data[source].edges = r.data[source].edges.filter(({ node }) => !exclude.some((excludedRoute) => {
-                const slug = source === `allMarkdownRemark` ? node.fields.slug.replace(/^\/|\/$/, ``) : node.slug.replace(/^\/|\/$/, ``)
+                const slug = (source === `allMarkdownRemark` || source === `allMdx`) ? node.fields.slug.replace(/^\/|\/$/, ``) : node.slug.replace(/^\/|\/$/, ``)
                 excludedRoute = typeof excludedRoute === `object` ? excludedRoute : excludedRoute.replace(/^\/|\/$/, ``)
 
                 // test if the passed regular expression is valid
@@ -196,7 +196,7 @@ const serialize = ({ ...sources } = {},{ site, allSitePage }, mapping) => {
                         return
                     }
 
-                    if (type === `allMarkdownRemark`) {
+                    if (type === `allMarkdownRemark` || type === `allMdx`) {
                         node = serializeMarkdownNodes(node)
                     }
 

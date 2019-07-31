@@ -198,7 +198,7 @@ var runQuery = function runQuery(handler, _ref6) {
         r.data[source].edges = r.data[source].edges.filter(function (_ref7) {
           var node = _ref7.node;
           return !exclude.some(function (excludedRoute) {
-            var slug = source === "allMarkdownRemark" ? node.fields.slug.replace(/^\/|\/$/, "") : node.slug.replace(/^\/|\/$/, "");
+            var slug = source === "allMarkdownRemark" || source === "allMdx" ? node.fields.slug.replace(/^\/|\/$/, "") : node.slug.replace(/^\/|\/$/, "");
             excludedRoute = typeof excludedRoute === "object" ? excludedRoute : excludedRoute.replace(/^\/|\/$/, ""); // test if the passed regular expression is valid
 
             if (typeof excludedRoute === "object") {
@@ -254,7 +254,7 @@ var serialize = function serialize(_temp, _ref8, mapping) {
             return;
           }
 
-          if (type === "allMarkdownRemark") {
+          if (type === "allMarkdownRemark" || type === "allMdx") {
             node = serializeMarkdownNodes(node);
           } // if a mapping path is set, e. g. `/blog/tag` for tags, update the path
           // to reflect this. This prevents mapping issues, when we later update
