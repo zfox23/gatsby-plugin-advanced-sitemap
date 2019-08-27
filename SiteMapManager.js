@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _IndexMapGenerator = _interopRequireDefault(require("./IndexMapGenerator"));
 
@@ -27,7 +27,7 @@ function () {
     } // ensure, we have a cleaned up array
 
 
-    sitemapTypes = _lodash["default"].uniq(sitemapTypes); // create sitemaps for each type
+    sitemapTypes = _lodash.default.uniq(sitemapTypes); // create sitemaps for each type
 
     sitemapTypes.forEach(function (type) {
       _this[type] = options[type] || _this.createSiteMapGenerator(options, type);
@@ -46,13 +46,13 @@ function () {
     sitemapTypes.forEach(function (type) {
       return types[type] = _this2[type];
     });
-    return new _IndexMapGenerator["default"]({
+    return new _IndexMapGenerator.default({
       types: types
     });
   };
 
   _proto.createSiteMapGenerator = function createSiteMapGenerator(options, type) {
-    return new _SiteMapGenerator["default"](options, type);
+    return new _SiteMapGenerator.default(options, type);
   };
 
   _proto.getIndexXml = function getIndexXml(options) {
@@ -74,4 +74,4 @@ function () {
   return SiteMapManager;
 }();
 
-exports["default"] = SiteMapManager;
+exports.default = SiteMapManager;
