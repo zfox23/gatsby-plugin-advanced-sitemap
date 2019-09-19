@@ -122,7 +122,6 @@ const addPageNodes = (parsedNodesArray, allSiteNodes, siteUrl) => {
 }
 
 const serializeSources = (mapping) => {
-    console.log(`test`)
     let sitemaps = []
 
     for (let resourceType in mapping) {
