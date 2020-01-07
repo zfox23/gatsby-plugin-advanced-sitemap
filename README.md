@@ -128,4 +128,4 @@ Example output of ☝️ this exact config 👉 https://gatsby.ghost.org/sitemap
 
 # Copyright & License
 
-Copyright (c) 2019 [Ghost Foundation](https://ghost.org) - Released under the [MIT license](LICENSE).
+Copyright (c) 2013-2020 [Ghost Foundation](https://ghost.org) - Released under the [MIT license](LICENSE).
