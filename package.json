@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-advanced-sitemap",
   "description": "Advanced plugin for generating configurable XML sitemaps with linked media for better SEO and human-readable XSL templates.",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "license": "MIT",
   "author": "Ghost Foundation",
   "homepage": "https://docs.ghost.org/api/gatsby/",
