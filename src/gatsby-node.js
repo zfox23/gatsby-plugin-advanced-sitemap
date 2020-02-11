@@ -121,7 +121,7 @@ const addPageNodes = (parsedNodesArray, allSiteNodes, siteUrl) => {
     return pageNodes
 }
 
-const serializeSources = ({ mapping, additionalSitemaps = {} }) => {
+const serializeSources = ({ mapping, additionalSitemaps = [] }) => {
     let sitemaps = []
 
     for (let resourceType in mapping) {
