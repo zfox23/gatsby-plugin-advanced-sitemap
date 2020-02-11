@@ -121,7 +121,7 @@ const addPageNodes = (parsedNodesArray, allSiteNodes, siteUrl) => {
     return pageNodes
 }
 
-const serializeSources = (mapping) => {
+const serializeSources = ({ mapping, additionalSitemaps = {} }) => {
     let sitemaps = []
 
     for (let resourceType in mapping) {
@@ -137,6 +137,18 @@ const serializeSources = (mapping) => {
             sitemap: source.sitemap || `pages`,
         }
     })
+
+    if (additionalSitemaps) {
+        additionalSitemaps.forEach((addSitemap, index) => {
+            if (!addSitemap.url) {
+                throw new Error(`URL is required for additional Sitemap: `, addSitemap)
+            }
+            sitemaps.push({
+                name: `external-${addSitemap.name ? addSitemap.name : addSitemap.sitemap || `pages-${index}`}`,
+                url: addSitemap.url,
+            })
+        })
+    }
 
     sitemaps = _.uniqBy(sitemaps, `name`)
 
@@ -283,14 +295,16 @@ exports.onPostBuild = async ({ graphql, pathPrefix }, pluginOptions) => {
     // sources, we need to serialize it in a way that we know which source names
     // we need and which types they are assigned to, independently from where they
     // come from
-    options.sources = serializeSources(options.mapping)
+    options.sources = serializeSources(options)
 
     options.sources.forEach((type) => {
-        // for each passed name we want to receive the related source type
-        resourcesSiteMapsArray.push({
-            type: type.name,
-            xml: manager.getSiteMapXml(type.sitemap, options),
-        })
+        if (!type.url) {
+            // for each passed name we want to receive the related source type
+            resourcesSiteMapsArray.push({
+                type: type.name,
+                xml: manager.getSiteMapXml(type.sitemap, options),
+            })
+        }
     })
 
     const indexSiteMap = manager.getIndexXml(options)

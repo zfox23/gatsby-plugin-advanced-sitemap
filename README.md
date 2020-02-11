@@ -117,6 +117,15 @@ plugins: [
             ],
             createLinkInHead: true, // optional: create a link in the `<head>` of your site
             addUncaughtPages: true, // optional: will fill up pages that are not caught by queries and mapping and list them under `sitemap-pages.xml`
+            additionalSitemaps: [ // optional: add additional sitemaps, which are e. g. generated somewhere else, but need to be indexed for this domain
+                {
+                    name: `my-other-posts`,
+                    url: `/blog/sitemap-posts.xml`,
+                },
+                {
+                    url: `https://example.com/sitemap.xml`,
+                },
+            ],
         }
     }
 ]
