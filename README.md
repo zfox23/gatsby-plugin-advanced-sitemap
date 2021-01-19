@@ -37,7 +37,7 @@ plugins: [
 
 ## Options
 
-If you want to generate advanced, individually organised sitemaps based on your data, you can do so by passing in a query and config. The example below uses [Ghost](https://ghost.org), but this should work with any data source - including Pages, Markdown, Contentful, etc.
+If you want to generate advanced, individually organised sitemaps based on your data, you can do so by passing in a query and config. The example below uses [Ghost](https://ghost.org/), but this should work with any data source - including Pages, Markdown, Contentful, etc.
 
 **Example:**
 
@@ -137,4 +137,4 @@ Example output of ☝️ this exact config 👉 https://gatsby.ghost.org/sitemap
 
 # Copyright & License
 
-Copyright (c) 2013-2020 [Ghost Foundation](https://ghost.org) - Released under the [MIT license](LICENSE).
+Copyright (c) 2013-2020 [Ghost Foundation](https://ghost.org/) - Released under the [MIT license](LICENSE).
