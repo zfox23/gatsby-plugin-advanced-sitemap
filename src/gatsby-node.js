@@ -341,7 +341,7 @@ exports.onPostBuild = async ({graphql, pathPrefix}, pluginOptions) => {
 
     // Save the generated xml files in the public folder
     try {
-        await utils.writeFile(indexSitemapFile, indexSiteMap);
+        await utils.outputFile(indexSitemapFile, indexSiteMap);
     } catch (err) {
         console.error(err);
     }
@@ -351,7 +351,7 @@ exports.onPostBuild = async ({graphql, pathPrefix}, pluginOptions) => {
 
         // Save the generated xml files in the public folder
         try {
-            await utils.writeFile(filePath, sitemap.xml);
+            await utils.outputFile(filePath, sitemap.xml);
         } catch (err) {
             console.error(err);
         }

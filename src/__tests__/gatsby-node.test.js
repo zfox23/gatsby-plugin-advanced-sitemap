@@ -17,6 +17,9 @@ describe(`Test plugin sitemap`, () => {
         utils.writeFile = jest.fn();
         utils.writeFile.mockResolvedValue(true);
 
+        utils.outputFile = jest.fn();
+        utils.outputFile.mockResolvedValue(true);
+
         utils.readFile = jest.fn();
         utils.readFile.mockResolvedValue(true);
 
@@ -52,7 +55,7 @@ describe(`Test plugin sitemap`, () => {
 
         await onPostBuild({graphql, pathPrefix}, {});
 
-        const [filePath] = utils.writeFile.mock.calls[1];
+        const [filePath] = utils.outputFile.mock.calls[0];
 
         expect(filePath).toEqual(path.join(`public`, `sitemap.xml`));
     });
@@ -60,6 +63,9 @@ describe(`Test plugin sitemap`, () => {
     it(`custom query runs`, async () => {
         utils.writeFile = jest.fn();
         utils.writeFile.mockResolvedValue(true);
+
+        utils.outputFile = jest.fn();
+        utils.outputFile.mockResolvedValue(true);
 
         utils.readFile = jest.fn();
         utils.readFile.mockResolvedValue(true);
@@ -124,7 +130,7 @@ describe(`Test plugin sitemap`, () => {
 
         await onPostBuild({graphql, pathPrefix}, options);
 
-        const [filePath] = utils.writeFile.mock.calls[1];
+        const [filePath] = utils.outputFile.mock.calls[0];
 
         expect(filePath).toEqual(path.join(`public`, `custom-sitemap.xml`));
         expect(graphql).toBeCalledWith(customQuery);
@@ -187,8 +193,11 @@ describe(`sitemap index`, () => {
         utils.writeFile = jest.fn();
         utils.writeFile.mockResolvedValue(true);
 
+        utils.outputFile = jest.fn();
+        utils.outputFile.mockResolvedValue(true);
+
         await onPostBuild({graphql, pathPrefix}, options);
-        const [sitemap] = utils.writeFile.mock.calls[1];
+        const [sitemap] = utils.outputFile.mock.calls[0];
 
         expect(sitemap).toEqual(path.join(`public`, `sitemap.xml`));
     });
