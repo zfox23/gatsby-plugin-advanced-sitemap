@@ -57,10 +57,6 @@ const serializeMarkdownNodes = (node) => {
         delete node.fields.slug;
     }
 
-    node.slug = node.fields.slug;
-
-    delete node.fields.slug;
-
     if (node.frontmatter) {
         if (node.frontmatter.published_at) {
             node.published_at = node.frontmatter.published_at;
