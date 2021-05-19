@@ -10,7 +10,7 @@
     "url": "https://github.com/tryghost/gatsby-plugin-advanced-sitemap.git"
   },
   "engines": {
-    "node": ">= 10.13.0"
+    "node": ">= 12.19.0"
   },
   "bugs": {
     "url": "https://github.com/tryghost/gatsby-plugin-advanced-sitemap/issues"
@@ -32,24 +32,24 @@
     "gatsby": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.12.10",
-    "@babel/core": "7.12.10",
+    "@babel/cli": "7.14.3",
+    "@babel/core": "7.14.3",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
-    "babel-preset-gatsby-package": "0.12.0",
+    "babel-preset-gatsby-package": "1.5.0",
     "cross-env": "7.0.3",
     "eslint": "7.26.0",
     "eslint-plugin-ghost": "2.2.0",
     "eslint-plugin-jest": "24.3.6",
     "eslint-plugin-react": "7.23.2",
-    "gatsby": "2.32.12",
+    "gatsby": "3.5.0",
     "jest": "26.6.3",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "dependencies": {
-    "@babel/runtime": "7.12.5",
-    "fs-extra": "9.1.0",
+    "@babel/runtime": "7.14.0",
+    "fs-extra": "10.0.0",
     "lodash": "4.17.21",
     "moment": "2.29.1",
     "xml": "^1.0.1"
