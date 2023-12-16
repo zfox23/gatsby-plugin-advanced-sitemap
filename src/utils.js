@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import pify from 'pify';
 
-export const withoutTrailingSlash = path => (path === `/` ? path : path.replace(/\/$/, ``));
+export const withoutTrailingSlash = (path) => path;
 
 export const writeFile = pify(fs.writeFile);
 export const outputFile = pify(fs.outputFile);
